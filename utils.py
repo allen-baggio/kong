@@ -18,7 +18,6 @@ def get_services(query=None, page_length=DEFAULT_CARDS_PER_PAGE, page=0):
     :return: a list of services, max_page
     """
 
-
     if not query:
         return catalog.services[page*page_length:(page+1)*page_length], max(int(math.ceil(len(catalog.services) / float(page_length))) - 1, 0)
 
@@ -31,7 +30,7 @@ def get_service(service_id):
     """
     Retrieve a single service stored in data modeling/storage given service_id
 
-    :param servuce_id:
+    :param service_id:
     :return: a service or None
     """
 
