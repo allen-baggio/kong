@@ -8,22 +8,23 @@ DEFAULT_CARDS_PER_PAGE = 12
 catalog = Catalog()
 
 
-def get_services(query, page_length, page):
+def get_services(query=None, page_length=DEFAULT_CARDS_PER_PAGE, page=0):
     """
     Retrieve services stored in data modeling/storage
 
     :param query:
     :param page_length:
     :param page:
-    :return: a list of services
+    :return: a list of services, max_page
     """
 
+
     if not query:
-        return catalog.services[page*page_length:(page+1)*page_length], int(math.ceil(len(catalog.services) / page_length))
+        return catalog.services[page*page_length:(page+1)*page_length], max(int(math.ceil(len(catalog.services) / float(page_length))) - 1, 0)
 
     filtered_services = [s for s in catalog.services if query.lower() in s.name.lower() or query.lower() in s.description.lower()]
 
-    return filtered_services[page*page_length:(page+1)*page_length], int(math.ceil(len(filtered_services) / page_length))
+    return filtered_services[page*page_length:(page+1)*page_length], max(int(math.ceil(len(filtered_services) / float(page_length))) - 1, 0)
 
 
 def get_service(service_id):
