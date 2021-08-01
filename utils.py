@@ -1,69 +1,9 @@
-import time
-import math
-import random
+"""
+This module provides utility functions
+"""
 import error
-from model import Catalog, Service, Version
 
 DEFAULT_CARDS_PER_PAGE = 12
-catalog = Catalog()
-
-
-def get_services(query=None, page_length=DEFAULT_CARDS_PER_PAGE, page=0):
-    """
-    Retrieve services stored in data modeling/storage
-
-    :param query:
-    :param page_length:
-    :param page:
-    :return: a list of services, max_page
-    """
-
-    if not query:
-        return catalog.services[page*page_length:(page+1)*page_length], max(int(math.ceil(len(catalog.services) / float(page_length))) - 1, 0)
-
-    filtered_services = [s for s in catalog.services if query.lower() in s.name.lower() or query.lower() in s.description.lower()]
-
-    return filtered_services[page*page_length:(page+1)*page_length], max(int(math.ceil(len(filtered_services) / float(page_length))) - 1, 0)
-
-
-def get_service(service_id):
-    """
-    Retrieve a single service stored in data modeling/storage given service_id
-
-    :param service_id:
-    :return: a service or None
-    """
-
-    for s in catalog.services:
-        print(s.service_id)
-        if s.service_id == service_id:
-            return s
-    return None
-
-
-def add_service(name, description):
-    """
-    Add user input service into data modeling/storage
-
-    :param name:
-    :param description:
-    :return: service id
-    """
-    service = Service()
-    service.name = name
-    service.description = description
-    service.created_ts = long(time.time())
-    service.service_id = long(time.time()) + random.randint(0, 100)  # Use timestamp + a random number to generate ID
-
-    version = Version()
-    version.version_id = long(time.time()) + random.randint(0, 100)  # Use timestamp + a random number to generate ID
-    version.service_id = service.service_id
-    service.versions.insert(0, version)
-
-    # This is to ensure newly added service will be in the front of the list
-    catalog.services.insert(0, service)
-
-    return service.service_id
 
 
 def validate_get_services_request(request):
@@ -93,7 +33,7 @@ def validate_add_service_request(request):
     user_id = request.headers.get("user_id")
     validate_user_permission(user_id)
 
-    data = request.get_json()
+    data = request.get_json(force=True)
     name = data.get("name")
     description = data.get("description") if data.get("description") else ""
 
@@ -127,13 +67,3 @@ def validate_name_and_description(name, description):
     # TODO: Validate if the language is appropriate
     # TODO: Validate if the string has JavaScript injections
     pass
-
-# add_service("test3", "hello3")
-# time.sleep(1)
-# add_service("test2", "hello2")
-# time.sleep(1)
-# add_service("test1", "hello1")
-# time.sleep(1)
-# add_service("test4", "hello4")
-# time.sleep(1)
-# add_service("test5", "hello5")
