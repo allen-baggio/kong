@@ -60,7 +60,7 @@ This can be done in a browser as well
 ## TODO:
 
 * Add more user authentication/authentication
-* 
+
 * Security injection verification 
 
 * Build a persistent data storage
