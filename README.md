@@ -53,12 +53,19 @@ This can be done in a browser as well
 
 This can be done in a browser as well
 
+### Testing
+
+`$ python tests.py`
+
 ## TODO:
 
 * Add more user authentication/authentication
-* Security injection verification
+* 
+* Security injection verification 
 
-* Build a real data storage
+* Build a persistent data storage
+
+* API request/response schema valiation
 
 * Build a ID generation service
 
